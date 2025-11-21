@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-paper text-gray-900 antialiased;
+  }
+}
+
+@layer utilities {
+  .highlighter-yellow {
+    background: linear-gradient(180deg, transparent 60%, #FFEE58 60%);
+  }
+  
+  .highlighter-pink {
+    background: linear-gradient(180deg, transparent 60%, #FF79C6 60%);
+  }
+  
+  .highlighter-blue {
+    background: linear-gradient(180deg, transparent 60%, #7AD7F0 60%);
+  }
+  
+  .paper-texture {
+    background-color: #FFFEF7;
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 30px,
+        rgba(0, 0, 0, 0.02) 30px,
+        rgba(0, 0, 0, 0.02) 31px
+      );
+  }
+  
+  .doodle-border {
+    border: 2px solid #1a1a1a;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  }
+  
+  .strikethrough-simple {
+    position: relative;
+  }
+  
+  .strikethrough-simple::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background: #ef4444;
+    transform: rotate(-5deg);
+  }
+  
+  .strikethrough-aggressive {
+    position: relative;
+  }
+  
+  .strikethrough-aggressive::after {
+    content: '';
+    position: absolute;
+    left: -5%;
+    top: 50%;
+    width: 110%;
+    height: 4px;
+    background: #ef4444;
+    transform: rotate(-8deg);
+  }
+  
+  .strikethrough-aggressive::before {
+    content: '';
+    position: absolute;
+    left: -5%;
+    top: 50%;
+    width: 110%;
+    height: 3px;
+    background: #dc2626;
+    transform: rotate(5deg);
+  }
+}
