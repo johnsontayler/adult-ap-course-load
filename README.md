@@ -8,7 +8,8 @@ Built with Next.js 14, TypeScript, TailwindCSS, and Framer Motion.
 
 Feel free to contribute if you find this fun and useful!
 
-<img width="1439" height="700" alt="Screenshot 2025-11-20 at 10 15 29 PM" src="https://github.com/user-attachments/assets/ec1bb545-1fa5-41cf-994c-d19b43bdb580" />
+<img width="1426" height="702" alt="Screenshot 2025-11-24 at 1 09 38 PM" src="https://github.com/user-attachments/assets/7c7edfc2-3c67-4289-9c71-4f4aa9bcd69b" />
+
 
 
 ## Getting Started
