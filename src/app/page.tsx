@@ -36,16 +36,17 @@ export default function SplashScreen() {
             />
           </div>
 
+        {/* Subhead */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
-            className="mt-8"
+            className="mt-8 relative z-10"
           >
-            <p className="font-mono text-sm md:text-base leading-relaxed text-gray-600 uppercase tracking-wide mb-8">
-             Don't peak in high school.
+            <p className="font-mono text-sm md:text-base leading-relaxed text-black uppercase tracking-wide mb-8">
+              <span className="bg-report-yellow border border-black px-1">Don't peak in high school.</span>
               <br />
-              Rebuild your grown-up life like the overachiever you used to be.
+              <span className="bg-report-yellow border border-black px-1">Rebuild your grown-up life like the overachiever you used to be.</span>
             </p>
 
             <motion.button

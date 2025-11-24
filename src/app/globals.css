@@ -13,6 +13,10 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
   }
+  
+  button, a {
+    cursor: pointer;
+  }
 }
 
 @layer utilities {
@@ -35,6 +39,10 @@
   
   .highlight-blue {
     @apply bg-report-blue/30;
+  }
+
+  .highlight-dark {
+    @apply bg-report-dark;
   }
   
   /* Strikethroughs - kept for functionality but styled cleaner */
