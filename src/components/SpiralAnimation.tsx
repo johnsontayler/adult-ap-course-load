@@ -63,7 +63,7 @@ export default function SpiralAnimation({ onStop, decorative = false, className 
       let firstPoint = true;
 
       // Morph
-      const morph = (Math.sin(angleRef.current * 0.5) + 1) / 2;
+      const morph = (Math.sin(angleRef.current * 0.3) + 1) / 2;
 
       for (let i = 0; i < totalPoints; i++) {
         const progress = i / totalPoints;
@@ -73,15 +73,12 @@ export default function SpiralAnimation({ onStop, decorative = false, className 
         // Taper: Wide at top (progress 0), Narrow at bottom (progress 1)
         const taper = 1.2 - (progress * 0.6);
 
-        // Irregular oval shape
-        // Add organic wobble
-        const irregularity = Math.sin(angle * 2.5) * 20 + Math.cos(y * 0.05) * 15;
-        const rX = (radius + irregularity) * taper;
-        const rZ = ((radius * 0.6) + irregularity) * taper; 
+        // Smooth Circle Funnel
+        const rBase = radius * taper;
 
         // 3D Helix
-        const hx = Math.cos(angle) * rX;
-        const hz = Math.sin(angle) * rZ;
+        const hx = Math.cos(angle) * rBase;
+        const hz = Math.sin(angle) * rBase;
         const hy = y; 
 
         // 2D Spiral

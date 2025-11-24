@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAppStore } from '@/store/useAppStore';
 import SpiralAnimation from '@/components/SpiralAnimation';
 import EditorialTitle from '@/components/EditorialTitle';
@@ -28,7 +29,9 @@ export default function GamePage() {
       {/* Navigation Element */}
       <div className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-40 bg-white border-b border-black">
         <div className="font-mono text-sm tracking-widest uppercase">
-          The Adult AP / Chapter 3
+          <Link href="/" className="hover:text-report-coral transition-colors">
+            The Adult AP Course Load 
+          </Link>
         </div>
         <div className="font-mono text-xs md:text-sm">
           [ 003 / 005 ]
