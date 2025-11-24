@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface SpiralAnimationProps {
-  onStop: (magicNumber: number) => void;
+  onStop?: (magicNumber: number) => void;
+  decorative?: boolean;
+  className?: string;
 }
 
-export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
+export default function SpiralAnimation({ onStop, decorative = false, className = "" }: SpiralAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isAnimating, setIsAnimating] = useState(true);
   const [loops, setLoops] = useState(0);
@@ -34,53 +36,51 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw spiral
-      ctx.beginPath();
-      ctx.strokeStyle = '#FC7B69'; // Report Coral
-      ctx.lineWidth = 2;
-
-      for (let i = 0; i <= angleRef.current; i += 0.1) {
-        const radius = (i / (Math.PI * 10)) * maxRadius;
-        const x = centerX + radius * Math.cos(i);
-        const y = centerY + radius * Math.sin(i);
-
-        if (i === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
-        }
-      }
-      ctx.stroke();
-
-      // Draw current point
-      const currentRadius = (angleRef.current / (Math.PI * 10)) * maxRadius;
-      const currentX = centerX + currentRadius * Math.cos(angleRef.current);
-      const currentY = centerY + currentRadius * Math.sin(angleRef.current);
-
-      ctx.beginPath();
-      ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
-      ctx.fillStyle = '#EBE553'; // Report Yellow
-      ctx.fill();
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Increment angle
-      angleRef.current += 0.15;
-      radiusRef.current = currentRadius;
-
-      // Count loops
-      if (angleRef.current >= (loopCount + 1) * Math.PI * 2) {
-        loopCount++;
+      // Update rotation
+      angleRef.current += 0.05; // Rotation speed
+      
+      // Count loops based on rotation
+      // We'll count 1 loop every 360 degrees (2PI radians) of rotation
+      const currentLoops = Math.floor(angleRef.current / (Math.PI * 2));
+      if (currentLoops > loopCount) {
+        loopCount = currentLoops;
         setLoops(loopCount);
       }
 
-      // Reset if spiral gets too big
-      if (radiusRef.current >= maxRadius) {
-        angleRef.current = 0;
-        radiusRef.current = 10;
-        loopCount = 0;
+      // 3D Spiral Parameters
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = 170;
+      const height = 340;
+      const turns = 5; // Number of turns in the spiral
+      const pointsPerTurn = 50;
+      const totalPoints = turns * pointsPerTurn;
+
+      ctx.beginPath();
+      ctx.strokeStyle = '#000000'; 
+      ctx.lineWidth = 1;
+
+      let firstPoint = true;
+
+      for (let i = 0; i < totalPoints; i++) {
+        const progress = i / totalPoints;
+        const angle = progress * Math.PI * 2 * turns + angleRef.current; 
+        const y = (progress - 0.5) * height;
+        const x3d = Math.cos(angle) * radius;
+        const z3d = Math.sin(angle) * radius;
+        const scale = 400 / (400 + z3d); 
+        const x2d = centerX + x3d * scale;
+        const y2d = centerY + y * scale;
+
+        if (firstPoint) {
+          ctx.moveTo(x2d, y2d);
+          firstPoint = false;
+        } else {
+          ctx.lineTo(x2d, y2d);
+        }
       }
+      
+      ctx.stroke();
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -92,11 +92,12 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isAnimating]);
+  }, [isAnimating, decorative]);
 
   const handleClick = () => {
+    if (decorative || !onStop) return;
     setIsAnimating(false);
-    const magicNumber = Math.max(2, loops || 2); // Ensure minimum of 2
+    const magicNumber = Math.max(2, loops || 2); 
     setTimeout(() => onStop(magicNumber), 100);
   };
 
@@ -104,32 +105,37 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex flex-col items-center"
+      className={`flex flex-col items-center ${className}`}
     >
       <div
         onClick={handleClick}
-        className="cursor-pointer bg-white p-4 mb-6 border-2 border-black hover:border-report-blue transition-colors"
+        className={decorative 
+          ? "pointer-events-none"
+          : "cursor-pointer bg-white p-4 mb-6 border-2 border-black hover:border-report-blue transition-colors"
+        }
       >
         <canvas
           ref={canvasRef}
-          width={400}
-          height={400}
-          className="bg-gray-50"
+          width={600}
+          height={600}
+          className={`${decorative ? "" : "bg-gray-50"} w-full h-auto max-w-[600px]`}
         />
       </div>
       
-      <motion.div
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-        className="text-center"
-      >
-        <p className="text-4xl font-serif text-black mb-2">
-          CYCLES: <span className="text-report-coral font-mono">{loops}</span>
-        </p>
-        <p className="font-mono text-xs text-gray-500 uppercase tracking-widest">
-          [ Click Visual to Capture Variable ]
-        </p>
-      </motion.div>
+      {!decorative && (
+        <motion.div
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-center"
+        >
+          <p className="text-4xl font-serif text-black mb-2">
+            CYCLES: <span className="text-report-coral font-mono">{loops}</span>
+          </p>
+          <p className="font-mono text-xs text-gray-500 uppercase tracking-widest">
+            [ Click Visual to Capture Variable ]
+          </p>
+        </motion.div>
+      )}
     </motion.div>
   );
 }

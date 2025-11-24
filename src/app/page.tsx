@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import EditorialTitle from '@/components/EditorialTitle';
 import LifeRedesignCard from '@/components/LifeRedesignCard';
+import SpiralAnimation from '@/components/SpiralAnimation';
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -22,7 +23,12 @@ export default function SplashScreen() {
         
         {/* Left Section: Typography & Title */}
         <div className="lg:col-span-8 p-6 pt-24 lg:pt-6 flex flex-col justify-center relative z-10">
-          <div className="mb-8">
+          {/* Spiral Background */}
+          <div className="absolute inset-0 z-0 flex items-center justify-end pointer-events-none">
+            <SpiralAnimation decorative />
+          </div>
+
+          <div className="mb-8 relative z-10">
             <EditorialTitle 
               title={`THE ADULT\nAP COURSE\nLOAD`}
               highlightColor="bg-report-coral"
@@ -58,7 +64,7 @@ export default function SplashScreen() {
       </div>
 
       {/* Background Texture/Grain if needed, or just subtle gradients */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+      {/* <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div> */}
     </div>
   );
 }
