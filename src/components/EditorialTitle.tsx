@@ -5,12 +5,14 @@ interface EditorialTitleProps {
   title: string;
   highlightColor?: string;
   className?: string;
+  staggered?: boolean;
 }
 
 export default function EditorialTitle({ 
   title, 
   highlightColor = "bg-report-yellow",
-  className = ""
+  className = "",
+  staggered = false
 }: EditorialTitleProps) {
   // Split title into chunks to create the stair-step effect
   // We'll treat newlines as explicit breaks, but also wrap words
@@ -30,6 +32,11 @@ export default function EditorialTitle({
             font-sans text-3xl md:text-5xl lg:text-7xl font-medium tracking-tight uppercase
             ${index !== 0 ? '-mt-[1px]' : ''} // Overlap borders slightly
           `}
+          style={{
+            marginLeft: staggered 
+              ? index === 1 ? '12vw' : index === 2 ? '6vw' : 0
+              : 0
+          }}
         >
           {line.trim()}
         </motion.div>
