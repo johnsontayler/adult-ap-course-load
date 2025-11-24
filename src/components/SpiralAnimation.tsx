@@ -11,7 +11,7 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isAnimating, setIsAnimating] = useState(true);
   const [loops, setLoops] = useState(0);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
   const angleRef = useRef(0);
   const radiusRef = useRef(10);
 
@@ -36,8 +36,8 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
 
       // Draw spiral
       ctx.beginPath();
-      ctx.strokeStyle = '#FF79C6';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#FC7B69'; // Report Coral
+      ctx.lineWidth = 2;
 
       for (let i = 0; i <= angleRef.current; i += 0.1) {
         const radius = (i / (Math.PI * 10)) * maxRadius;
@@ -58,8 +58,8 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
       const currentY = centerY + currentRadius * Math.sin(angleRef.current);
 
       ctx.beginPath();
-      ctx.arc(currentX, currentY, 8, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFEE58';
+      ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
+      ctx.fillStyle = '#EBE553'; // Report Yellow
       ctx.fill();
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 2;
@@ -108,26 +108,26 @@ export default function SpiralAnimation({ onStop }: SpiralAnimationProps) {
     >
       <div
         onClick={handleClick}
-        className="cursor-pointer bg-white rounded-3xl shadow-2xl p-8 mb-6 border-4 border-gray-900"
+        className="cursor-pointer bg-white p-4 mb-6 border-2 border-black hover:border-report-blue transition-colors"
       >
         <canvas
           ref={canvasRef}
           width={400}
           height={400}
-          className="rounded-2xl"
+          className="bg-gray-50"
         />
       </div>
       
       <motion.div
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ repeat: Infinity, duration: 1.5 }}
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ repeat: Infinity, duration: 2 }}
         className="text-center"
       >
-        <p className="text-2xl font-bold text-gray-900">
-          Loops: <span className="text-neon-pink">{loops}</span>
+        <p className="text-4xl font-serif text-black mb-2">
+          CYCLES: <span className="text-report-coral font-mono">{loops}</span>
         </p>
-        <p className="text-sm text-gray-600 mt-2">
-          Tap the spiral to stop!
+        <p className="font-mono text-xs text-gray-500 uppercase tracking-widest">
+          [ Click Visual to Capture Variable ]
         </p>
       </motion.div>
     </motion.div>

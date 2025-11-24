@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/store/useAppStore';
 import { CATEGORIES } from '@/lib/constants';
 import Confetti from '@/components/Confetti';
+import EditorialTitle from '@/components/EditorialTitle';
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -15,48 +16,68 @@ export default function ResultsPage() {
   };
 
   return (
-    <div className="min-h-screen paper-texture p-6 md:p-12 relative">
+    <div className="min-h-screen p-6 md:p-12 pt-32 md:pt-40">
       <Confetti />
       
-      <div className="max-w-4xl mx-auto">
+      {/* Navigation Element */}
+      <div className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-40 bg-white border-b border-black">
+        <div className="font-mono text-sm tracking-widest uppercase">
+          The Adult AP / Final Output
+        </div>
+        <div className="font-mono text-xs md:text-sm">
+          [ 005 / 005 ]
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-16 flex flex-col items-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Your <span className="highlighter-pink">Course Load</span>
-          </h1>
-          <p className="text-xl text-gray-600">
-            Here's what the universe (and math) chose for you:
+          <div className="mb-8">
+            <EditorialTitle 
+              title={`COMPUTED\nTRAJECTORY`}
+              highlightColor="bg-report-purple"
+            />
+          </div>
+          <p className="font-mono text-sm uppercase tracking-widest text-gray-500">
+            Optimized variables selected for your 2025 curriculum.
           </p>
         </motion.div>
 
         {/* Results Cards */}
-        <div className="space-y-6 mb-12">
+        <div className="space-y-0 border-t border-black mb-16">
           {CATEGORIES.map((category, index) => {
             const selectedWord = selectedWords[category.slug];
-            const colors = ['highlighter-yellow', 'highlighter-pink', 'highlighter-blue'];
-            const highlightClass = colors[index % colors.length];
+            const bgColors = ['bg-report-yellow', 'bg-report-pink', 'bg-report-blue', 'bg-report-coral'];
+            const highlightClass = bgColors[index % bgColors.length];
 
             return (
               <motion.div
                 key={category.slug}
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.15 }}
-                className="bg-white rounded-2xl border-4 border-gray-900 p-8 shadow-xl"
+                className="group relative border-b border-black p-8 md:p-10 hover:bg-gray-50 transition-colors flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="text-4xl">{category.icon}</div>
-                  <h3 className="text-2xl font-bold text-gray-900">
-                    {category.title}
-                  </h3>
+                <div className="flex items-center gap-6">
+                  <div className="font-mono text-xs text-gray-400 uppercase tracking-widest w-8">
+                    0{index + 1}
+                  </div>
+                  <div className="flex flex-col">
+                     <h3 className="font-mono text-xs uppercase tracking-widest text-gray-500 mb-1">
+                      {category.title}
+                    </h3>
+                    <p className="font-serif text-4xl md:text-5xl text-black">
+                      {selectedWord}
+                    </p>
+                  </div>
                 </div>
-                <div className={`inline-block px-6 py-3 rounded-full border-2 border-gray-900 ${highlightClass}`}>
-                  <p className="text-3xl font-bold">{selectedWord}</p>
-                </div>
+                
+                {/* Abstract Decoration */}
+                <div className={`w-3 h-3 ${highlightClass} rounded-full opacity-0 group-hover:opacity-100 transition-opacity`} />
               </motion.div>
             );
           })}
@@ -71,11 +92,11 @@ export default function ResultsPage() {
         >
           <button
             onClick={handleGeneratePlan}
-            className="bg-gray-900 text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 shadow-lg flex items-center gap-3"
+            className="group relative px-12 py-5 overflow-hidden font-mono text-sm uppercase tracking-widest bg-black text-white hover:bg-report-purple hover:text-black transition-colors duration-300"
           >
-            <span>✨</span>
-            Generate My 6-Month Plan
-            <span>✨</span>
+            <span className="relative z-10">
+              Generate Tactical Roadmap →
+            </span>
           </button>
         </motion.div>
       </div>

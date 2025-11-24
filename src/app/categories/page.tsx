@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/store/useAppStore';
 import { CATEGORIES } from '@/lib/constants';
-import { CheckCircle2, Circle } from 'lucide-react';
+import EditorialTitle from '@/components/EditorialTitle';
 
 export default function CategoriesPage() {
   const router = useRouter();
@@ -25,24 +25,37 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="min-h-screen paper-texture p-6 md:p-12">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen p-6 md:p-12 pt-32 md:pt-40">
+      {/* Navigation Element */}
+      <div className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-40 bg-white border-b border-black">
+        <div className="font-mono text-sm tracking-widest uppercase">
+          The Adult AP / Chapter 2
+        </div>
+        <div className="font-mono text-xs md:text-sm">
+          [ 002 / 005 ]
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="mb-16 border-l-2 border-black pl-6"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Build Your <span className="highlighter-pink">Course Load</span>
-          </h1>
-          <p className="text-xl text-gray-600">
-            Add 3-5 options for each category. The game will choose for you.
+          <div className="mb-8">
+            <EditorialTitle 
+              title={`CONSTRUCT\nYOUR COURSE\nLOAD`}
+              highlightColor="bg-report-pink"
+            />
+          </div>
+          <p className="font-mono text-sm uppercase tracking-widest text-gray-500">
+            Minimum 3 inputs required per category sector.
           </p>
         </motion.div>
 
-        {/* Category Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        {/* Category Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-black border border-black mb-16">
           {CATEGORIES.map((category, index) => {
             const itemCount = categories[category.slug]?.length || 0;
             const isFilled = itemCount >= 3;
@@ -50,30 +63,39 @@ export default function CategoriesPage() {
             return (
               <motion.button
                 key={category.slug}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
                 onClick={() => handleCategoryClick(category.slug)}
-                className="bg-white rounded-2xl border-3 border-gray-300 hover:border-gray-900 transition-all p-6 text-left shadow-md"
+                className={`relative p-8 md:p-12 text-left bg-white group hover:bg-gray-50 transition-colors
+                  ${isFilled ? 'bg-report-blue/10' : ''}
+                `}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="text-4xl">{category.icon}</div>
-                  {isFilled ? (
-                    <CheckCircle2 className="text-green-600" size={24} />
-                  ) : (
-                    <Circle className="text-gray-300" size={24} />
-                  )}
+                <div className="flex justify-between items-start mb-8">
+                  <span className="font-mono text-xs uppercase tracking-widest text-gray-400">
+                    {index + 1 < 10 ? `0${index + 1}` : index + 1} / SECTOR
+                  </span>
+                  <div className={`font-mono text-xs px-2 py-1 border border-black uppercase
+                    ${isFilled ? 'bg-black text-white' : 'text-gray-400 border-gray-200'}
+                  `}>
+                    {isFilled ? 'Complete' : 'Pending'}
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{category.title}</h3>
-                <p className="text-gray-600 mb-3">{category.description}</p>
-                <div className="flex items-center gap-2">
-                  <span className={`text-sm font-semibold ${isFilled ? 'text-green-600' : 'text-gray-400'}`}>
-                    {itemCount} {itemCount === 1 ? 'item' : 'items'} added
+
+                <h3 className="font-serif text-3xl md:text-4xl mb-4 group-hover:text-report-blue transition-colors">
+                  {category.title}
+                </h3>
+                <p className="font-mono text-xs text-gray-500 mb-6 max-w-sm leading-relaxed">
+                  {category.description}
+                </p>
+                
+                <div className="flex items-center gap-4 font-mono text-xs">
+                  <span className={`${isFilled ? 'text-black' : 'text-report-coral'}`}>
+                    [{itemCount}] Items Logged
                   </span>
                   {!isFilled && (
-                    <span className="text-xs text-gray-400">
-                      (min 3 required)
+                    <span className="text-gray-300">
+                      // Min. 3 Required
                     </span>
                   )}
                 </div>
@@ -82,25 +104,26 @@ export default function CategoriesPage() {
           })}
         </div>
 
-        {/* Continue Button */}
+        {/* Continue Action */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="flex justify-center"
+          className="flex justify-end"
         >
           <button
             onClick={handleContinue}
             disabled={!allCategoriesFilled}
-            className={`px-12 py-4 rounded-full text-lg font-semibold transition-all ${
-              !allCategoriesFilled
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-gray-900 text-white hover:bg-gray-800 shadow-lg'
-            }`}
+            className={`group relative px-8 py-4 overflow-hidden font-mono text-sm uppercase tracking-widest transition-colors duration-300
+              ${!allCategoriesFilled
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                : 'bg-black text-white hover:bg-report-pink hover:text-black'
+              }
+            `}
           >
-            {allCategoriesFilled
-              ? 'Continue to Game →'
-              : 'Fill all categories to continue'}
+            <span className="relative z-10">
+              {allCategoriesFilled ? 'Initialize Simulation →' : 'Awaiting Data Input'}
+            </span>
           </button>
         </motion.div>
       </div>

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/store/useAppStore';
 import SpiralAnimation from '@/components/SpiralAnimation';
+import EditorialTitle from '@/components/EditorialTitle';
 
 export default function GamePage() {
   const router = useRouter();
@@ -23,21 +24,34 @@ export default function GamePage() {
   };
 
   return (
-    <div className="min-h-screen paper-texture p-6 md:p-12">
+    <div className="min-h-screen p-6 md:p-12 pt-32 md:pt-40">
+      {/* Navigation Element */}
+      <div className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-40 bg-white border-b border-black">
+        <div className="font-mono text-sm tracking-widest uppercase">
+          The Adult AP / Chapter 3
+        </div>
+        <div className="font-mono text-xs md:text-sm">
+          [ 003 / 005 ]
+        </div>
+      </div>
+
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-16 flex flex-col items-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            The <span className="highlighter-yellow">Magic Number</span>
-          </h1>
-          <p className="text-xl text-gray-600">
+          <div className="mb-8">
+            <EditorialTitle 
+              title={`DETERMINE\nVARIABLE N`}
+              highlightColor="bg-report-yellow"
+            />
+          </div>
+          <p className="font-mono text-sm uppercase tracking-widest text-gray-500">
             {showSpiral 
-              ? 'Tap anywhere to stop the spiral and reveal your magic number'
-              : 'This is your magic number! It will determine your destiny.'}
+              ? 'Algorithm awaiting input. Interact to calibrate.'
+              : 'Variable captured. Proceed to elimination sequence.'}
           </p>
         </motion.div>
 
@@ -46,25 +60,29 @@ export default function GamePage() {
           <SpiralAnimation onStop={handleSpiralStop} />
         ) : (
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200 }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
             className="flex flex-col items-center justify-center"
           >
-            <div className="w-64 h-64 rounded-full bg-neon-pink flex items-center justify-center doodle-border shadow-2xl mb-8">
-              <div className="text-9xl font-bold text-white">{number}</div>
+            <div className="relative w-64 h-64 flex items-center justify-center mb-12">
+              {/* Geometric Background */}
+              <div className="absolute inset-0 border-2 border-black transform rotate-45" />
+              <div className="absolute inset-0 border-2 border-report-yellow" />
+              
+              <div className="relative z-10 text-9xl font-serif text-black">
+                {number}
+              </div>
             </div>
             
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={handleContinue}
-              className="bg-gray-900 text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 shadow-lg"
+              className="group relative px-12 py-4 overflow-hidden font-mono text-sm uppercase tracking-widest bg-black text-white hover:bg-report-yellow hover:text-black transition-colors duration-300"
             >
-              Continue to Elimination →
+              <span className="relative z-10">Initiate Elimination Sequence →</span>
             </motion.button>
           </motion.div>
         )}

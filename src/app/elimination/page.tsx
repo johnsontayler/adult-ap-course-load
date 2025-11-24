@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/store/useAppStore';
 import { runElimination, EliminationStep } from '@/lib/elimination';
 import { CATEGORIES } from '@/lib/constants';
+import EditorialTitle from '@/components/EditorialTitle';
 
 export default function EliminationPage() {
   const router = useRouter();
@@ -53,51 +54,71 @@ export default function EliminationPage() {
   const eliminatedIndices = steps.slice(0, currentStep).map((step) => step.index);
 
   return (
-    <div className="min-h-screen paper-texture p-6 md:p-12">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen p-6 md:p-12 pt-32 md:pt-40">
+      {/* Navigation Element */}
+      <div className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-40 bg-white border-b border-black">
+        <div className="font-mono text-sm tracking-widest uppercase">
+          The Adult AP / Chapter 4
+        </div>
+        <div className="font-mono text-xs md:text-sm">
+          [ 004 / 005 ]
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-16 flex flex-col items-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="highlighter-blue">Elimination Round</span>
-          </h1>
-          <p className="text-xl text-gray-600">
-            Counting by {magicNumber}... watch your options disappear!
-          </p>
-          {isComplete && (
-            <p className="text-lg text-green-600 font-semibold mt-4">
-              ✓ Elimination complete! Your destiny awaits.
-            </p>
-          )}
+          <div className="mb-8">
+            <EditorialTitle 
+              title={`PROCESSING\nDELETION`}
+              highlightColor="bg-report-coral"
+            />
+          </div>
+          <div className="flex justify-center items-center gap-4 font-mono text-sm uppercase tracking-widest text-gray-500">
+            <span>Variable: {magicNumber}</span>
+            <span>•</span>
+            <span>
+              Status: {isComplete ? <span className="text-black">Complete</span> : 'Processing...'}
+            </span>
+          </div>
         </motion.div>
 
         {/* Items Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-gray-200 border border-gray-200 mb-16">
           {allItems.map((item, index) => {
             const isEliminated = eliminatedIndices.includes(item.index);
-            const eliminationIndex = eliminatedIndices.indexOf(item.index);
-            const isAggressive = eliminationIndex % 3 === 0; // Vary strikethrough style
 
             return (
               <motion.div
                 key={`${item.categorySlug}-${index}`}
                 initial={{ opacity: 1 }}
                 animate={{
-                  opacity: isEliminated ? 0.3 : 1,
-                  scale: isEliminated ? 0.95 : 1,
+                  backgroundColor: isEliminated ? '#f3f4f6' : '#ffffff',
                 }}
-                className={`bg-white px-4 py-3 rounded-xl border-2 border-gray-300 text-center relative ${
-                  isEliminated
-                    ? isAggressive
-                      ? 'strikethrough-aggressive'
-                      : 'strikethrough-simple'
-                    : ''
-                }`}
+                className="relative p-6 min-h-[120px] flex flex-col justify-between group"
               >
-                <p className="text-sm font-medium">{item.item}</p>
+                <div className="flex justify-between items-start">
+                  <span className={`font-mono text-[10px] uppercase tracking-widest ${isEliminated ? 'text-gray-300' : 'text-gray-400'}`}>
+                    {item.categorySlug.slice(0, 3)}
+                  </span>
+                  {isEliminated && (
+                    <span className="font-mono text-[10px] text-red-500 uppercase tracking-widest">
+                      [DEL]
+                    </span>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <p className={`font-serif text-xl md:text-2xl transition-colors duration-300 ${
+                    isEliminated ? 'text-gray-300 line-through decoration-red-500/30 decoration-2' : 'text-black'
+                  }`}>
+                    {item.item}
+                  </p>
+                </div>
               </motion.div>
             );
           })}
@@ -106,16 +127,16 @@ export default function EliminationPage() {
         {/* Continue Button */}
         {isComplete && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             className="flex justify-center"
           >
             <button
               onClick={handleContinue}
-              className="bg-gray-900 text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 shadow-lg"
+              className="group relative px-12 py-4 overflow-hidden font-mono text-sm uppercase tracking-widest bg-black text-white hover:bg-report-coral hover:text-black transition-colors duration-300"
             >
-              See My Results →
+              <span className="relative z-10">View Final Report →</span>
             </button>
           </motion.div>
         )}
