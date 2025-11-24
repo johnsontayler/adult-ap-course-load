@@ -11,13 +11,13 @@ export const MOODS: { value: MoodType; emoji: string; description: string }[] = 
 export const CATEGORIES: Category[] = [
   {
     slug: 'extracurriculars',
-    title: 'Extracurriculars',
+    title: 'Extracurricular',
     description: 'Hobbies, creative pursuits, fun activities',
     icon: '🎭',
   },
   {
     slug: 'leadership-roles',
-    title: 'Leadership Roles',
+    title: 'Leadership Role',
     description: 'Ways to lead, organize, or mentor others',
     icon: '👥',
   },
@@ -29,7 +29,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: 'volunteer-causes',
-    title: 'Volunteer Causes',
+    title: 'Volunteer Cause',
     description: 'Ways to give back to your community',
     icon: '❤️',
   },
