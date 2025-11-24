@@ -50,7 +50,7 @@ export default function SpiralAnimation({ onStop, decorative = false, className 
       // 3D Spiral Parameters
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const radius = 170;
+      const radius = 140;
       const height = 340;
       const turns = 5; // Number of turns in the spiral
       const pointsPerTurn = 50;
@@ -62,15 +62,43 @@ export default function SpiralAnimation({ onStop, decorative = false, className 
 
       let firstPoint = true;
 
+      // Morph
+      const morph = (Math.sin(angleRef.current * 0.5) + 1) / 2;
+
       for (let i = 0; i < totalPoints; i++) {
         const progress = i / totalPoints;
         const angle = progress * Math.PI * 2 * turns + angleRef.current; 
         const y = (progress - 0.5) * height;
-        const x3d = Math.cos(angle) * radius;
-        const z3d = Math.sin(angle) * radius;
-        const scale = 400 / (400 + z3d); 
-        const x2d = centerX + x3d * scale;
-        const y2d = centerY + y * scale;
+        
+        // Taper: Wide at top (progress 0), Narrow at bottom (progress 1)
+        const taper = 1.2 - (progress * 0.6);
+
+        // Irregular oval shape
+        // Add organic wobble
+        const irregularity = Math.sin(angle * 2.5) * 20 + Math.cos(y * 0.05) * 15;
+        const rX = (radius + irregularity) * taper;
+        const rZ = ((radius * 0.6) + irregularity) * taper; 
+
+        // 3D Helix
+        const hx = Math.cos(angle) * rX;
+        const hz = Math.sin(angle) * rZ;
+        const hy = y; 
+
+        // 2D Spiral
+        // Grow radius from 0 to ~height/2
+        const sRadius = (height * 0.6) * progress;
+        const sx = Math.cos(angle) * sRadius;
+        const sy = Math.sin(angle) * sRadius;
+        const sz = 0;
+
+        // Interpolate
+        const xMixed = hx * morph + sx * (1 - morph);
+        const yMixed = hy * morph + sy * (1 - morph);
+        const zMixed = hz * morph + sz * (1 - morph);
+        
+        const scale = 400 / (400 + zMixed); 
+        const x2d = centerX + xMixed * scale;
+        const y2d = centerY + yMixed * scale;
 
         if (firstPoint) {
           ctx.moveTo(x2d, y2d);
