@@ -79,7 +79,7 @@ export default function CategoryInputPage() {
           className="flex items-center gap-2 text-gray-500 hover:text-black mb-12 font-mono text-sm uppercase tracking-widest group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span>Return to Sector Map</span>
+          <span>Return to Categories</span>
         </motion.button>
 
         {/* Header */}

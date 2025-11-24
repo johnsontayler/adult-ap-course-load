@@ -48,12 +48,13 @@ export default function CategoriesPage() {
         >
           <div className="mb-8">
             <EditorialTitle 
-              title={`CONSTRUCT\nYOUR COURSE\nLOAD`}
+              title={`CONSTRUCT YOUR\nCOURSE LOAD`}
               highlightColor="bg-report-pink"
+              staggered
             />
           </div>
           <p className="font-mono text-sm uppercase tracking-widest text-gray-500">
-            Minimum 3 inputs required per category sector.
+            Minimum 3 inputs required per category.
           </p>
         </motion.div>
 
@@ -76,7 +77,7 @@ export default function CategoriesPage() {
               >
                 <div className="flex justify-between items-start mb-8">
                   <span className="font-mono text-xs uppercase tracking-widest text-gray-400">
-                    {index + 1 < 10 ? `0${index + 1}` : index + 1} / SECTOR
+                    {index + 1 < 10 ? `0${index + 1}` : index + 1} / CATEGORY
                   </span>
                   <div className={`font-mono text-xs px-2 py-1 border border-black uppercase
                     ${isFilled ? 'bg-black text-white' : 'text-gray-400 border-gray-200'}
